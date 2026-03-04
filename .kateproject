@@ -1,0 +1,19 @@
+{
+    "name": "KDE Epson Fax Pro",
+    "files": [
+        {
+            "directory": ".",
+            "recursive": true
+        }
+    ],
+    "build": {
+        "directory": ".",
+        "default_target": "Run",
+        "targets": [
+            {
+                "name": "Run",
+                "build_cmd": "venv/bin/python main.py"
+            }
+        ]
+    }
+}
