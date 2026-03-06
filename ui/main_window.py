@@ -190,16 +190,15 @@ class MainWindow(QMainWindow):
     # ================= NOTIFICHE =================
 
     def notify(self, title, message):
-        self.tray.showMessage(
-            title,
-            message,
-            QSystemTrayIcon.MessageIcon.Information,
-            5000
-        )
-
         QProcess.startDetached(
             "notify-send",
-            [title, message, "--app-name=KDE Epson Fax"]
+            [
+                title,
+                message,
+                "--app-name=KDE Epson Fax",
+                "--hint=boolean:resident:true",
+                "--hint=boolean:transient:false"
+            ]
         )
 
     # ================= MENU ACTIONS =================
