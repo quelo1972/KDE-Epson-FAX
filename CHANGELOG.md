@@ -3,6 +3,11 @@ Tutte le modifiche rilevanti al progetto saranno documentate in questo file.
 
 Il formato segue le linee guida di Keep a Changelog e Semantic Versioning.
 
+## [v1.0.1] - 2026-03-14
+
+### Changed
+- Aggiornato il changelog con versione v1.0.
+
 ## [v1.0] - 2026-03-14
 
 ### Added
