@@ -3,7 +3,7 @@ Tutte le modifiche rilevanti al progetto saranno documentate in questo file.
 
 Il formato segue le linee guida di Keep a Changelog e Semantic Versioning.
 
-## [Unreleased] - 2026-03-14
+## [v1.0] - 2026-03-14
 
 ### Added
 - Logging applicativo con rotazione file.
