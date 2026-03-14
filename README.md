@@ -84,5 +84,9 @@ Se lo storico non aggiorna:
 - Verifica permessi sul database in `~/.local/share/kde-epson-fax`.
 - Controlla eventuali errori in console o nel log.
 
+## Release
+- v1.0: https://github.com/quelo1972/KDE-Epson-FAX/releases/tag/v1.0
+- v1.0.1: https://github.com/quelo1972/KDE-Epson-FAX/releases/tag/v1.0.1
+
 ## Licenza
 Non specificata. Se vuoi, aggiungila in `LICENSE`.
