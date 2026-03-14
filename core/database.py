@@ -19,7 +19,8 @@ def init_db():
         recipient TEXT,
         file TEXT,
         job_id TEXT,
-        status TEXT
+        status TEXT,
+        completed_at TEXT
     )
     """)
 
@@ -32,6 +33,13 @@ def init_db():
     """)
 
     conn.commit()
+
+    c.execute("PRAGMA table_info(fax_history)")
+    columns = {row[1] for row in c.fetchall()}
+    if "completed_at" not in columns:
+        c.execute("ALTER TABLE fax_history ADD COLUMN completed_at TEXT")
+
+    conn.commit()
     conn.close()
 
 
@@ -41,15 +49,16 @@ def add_history(printer, recipient, file, job_id, status):
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute("""
-    INSERT INTO fax_history (datetime, printer, recipient, file, job_id, status)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO fax_history (datetime, printer, recipient, file, job_id, status, completed_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
     """, (
         datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         printer,
         recipient,
         file,
         job_id,
-        status
+        status,
+        None
     ))
     conn.commit()
     conn.close()
@@ -58,7 +67,14 @@ def add_history(printer, recipient, file, job_id, status):
 def update_status(job_id, new_status):
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
-    c.execute("UPDATE fax_history SET status=? WHERE job_id=?", (new_status, job_id))
+    if new_status in {"COMPLETED", "FAILED", "CANCELLED"}:
+        c.execute("""
+            UPDATE fax_history
+            SET status=?, completed_at=COALESCE(completed_at, ?)
+            WHERE job_id=?
+        """, (new_status, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), job_id))
+    else:
+        c.execute("UPDATE fax_history SET status=? WHERE job_id=?", (new_status, job_id))
     conn.commit()
     conn.close()
 
@@ -67,7 +83,7 @@ def get_history():
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute("""
-        SELECT id, datetime, printer, recipient, file, job_id, status
+        SELECT id, datetime, printer, recipient, file, job_id, status, completed_at
         FROM fax_history ORDER BY id DESC
     """)
     rows = c.fetchall()
